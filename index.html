@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html>
 <body>
-
-<canvas id="screen" width="310" height="310">
+<style type="text/css" media="screen">
+    canvas, img { display:block; margin:1em auto; border:1px solid black; }
+</style>
+<img id="goatImg" src="Images/goat.jpg" alt="Goat" width="20" height="20" style="display: none;">
+<img id="space" src="Images/space.jpg" alt="The Space" width="500" height="500" style="display: none;">
+<canvas id="screen" width="500" height="500"
+style="border:1px solid #000000;"></canvas>
 <script src="game.js"></script>
 
 </body>

@@ -48,10 +48,11 @@
         draw: function(screen, gameSize) {
             // Clear the screen to make sure only one instance of the player drew
             screen.clearRect(0, 0, gameSize.x, gameSize.y);
+            //screen.fillText("Goat Invaders", 200, 10);
             // Draw a rectangle on the screen
             for (var i=0; i < this.bodies.length; i++) {
                 // draw all the bodies
-                drawRect(screen, this.bodies[i]);
+                drawRect(screen, gameSize, this.bodies[i]);
             }
         },
 
@@ -156,7 +157,7 @@
         // Player updates itself on this function
         update: function () {
             // Check the boundary
-            if(this.patrolX < 0 || this.patrolX > 40) {
+            if(this.patrolX < 0 || this.patrolX > 180) {
                 // Turn back
                 this.velocityX = - this.velocityX;
             }
@@ -177,8 +178,8 @@
 
     var createInvaders = function(game) {
         var invaders = [];
-        for (var i=0; i < 24; i++) {
-            var x = 30 + (i % 8) * 30;
+        for (var i=0; i < 30; i++) {
+            var x = 30 + (i % 10) * 30;
             var y = 30 + (i % 3) * 30;
             invaders.push(new Invader(game, {x: x, y: y}));
         }
@@ -190,12 +191,18 @@
     // Helper function
     //******************************************************************************
 
-    // drawRect function to draw bodies
-    var drawRect = function(screen, body) {
+    // drawRectfunction to draw bodies
+    var drawRect = function(screen, gameSize, body) {
         // Draws rectangle with (x, y, width, height)
-        screen.fillRect(body.center.x - body.size.x/2,
-                        body.center.y - body.size.y/2,
-                        body.size.x, body.size.y);
+        var x = body.center.x - body.size.x/2;
+        var y =  body.center.y - body.size.y/2;
+
+        // Ensure the element is not get drawn over the size of the screen
+        if(x < 0) x = 0;
+        if(x + body.size.x > gameSize.x) x = gameSize.x - body.size.x;
+        // TEST
+        screen.fillRect(x, y, body.size.x, body.size.y);
+        //screen.drawImage(img, x, y);
     };
 
     // Bind events of keyboard
@@ -229,11 +236,13 @@
     // play sound
     // @url - url to play sound
     var loadSound = function(url, callback) {
+        var sound = new Audio(url);
+
         var loaded = function() {
             callback(sound);
             sound.removeEventListener('canplaythrough', loaded);
         };
-        var sound = new Audio(url);
+
         // We add listener when the sound is fully loaded
         sound.addEventListener('canplaythrough', loaded);
         sound.load();
