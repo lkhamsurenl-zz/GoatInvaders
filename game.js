@@ -102,8 +102,10 @@
                 // Create the bullets
                 var bullet = new Bullet( {x: this.center.x, y: this.center.y - this.size.y / 2},
                                          {x: 0, y : -6});
-                // add bullet into the game bodies
-                this.game.addBody(bullet);
+                // add bullet into the game bodies, only if not too many
+                if(this.game.bodies.length < 100) {
+                    this.game.addBody(bullet);
+                }
                 // Play sound
                 //this.game.shootSound.load();
                 //this.game.shootSound.play();
